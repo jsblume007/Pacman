@@ -18,6 +18,15 @@ while running:
             running = False
         elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             running = False
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_UP:
+                pacman.move(0, -1, board)
+            elif event.key == pg.K_DOWN:
+                pacman.move(0, 1, board)
+            elif event.key == pg.K_LEFT:
+                pacman.move(-1, 0, board)
+            elif event.key == pg.K_RIGHT:
+                pacman.move(1, 0, board)
 
     # Tegn bakgrunn: (En slags "reset" av hele vinduet vårt)
     vindu.fill(BLACK)

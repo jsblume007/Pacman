@@ -31,7 +31,17 @@ class PacMan:
         # Om vi vil speile bildet:
         self.venstre = False
 
-
+    def move(self, dcol, drow, board):
+        # Regner ut neste/ny posisjon
+        ny_col = self.col + dcol
+        ny_row = self.row + drow
+        if board.is_road(ny_col, ny_row):
+            self.col = ny_col
+            self.row = ny_row
+            if dcol < 0:    # Beveger seg til venstre
+                self.venstre = True
+            elif dcol > 0:  # Beveger seg til høyre
+                self.venstre = False
 
     def draw(self, surface):
 
