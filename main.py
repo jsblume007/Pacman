@@ -10,6 +10,7 @@ clock = pg.time.Clock()
 
 
 pacman = PacMan(3, 4)
+score = 0
 
 running = True
 while running:
@@ -35,10 +36,14 @@ while running:
     board.draw(vindu)
 
     # TODO: Oppdater objektene våre:
+    score += board.eat_food(pacman.col, pacman.row)
 
 
     # Tegn objektene våre:
     pacman.draw(vindu)
+    font = pg.font.SysFont("Arial", 24)
+    score_text = font.render(f"Poeng: {score}", True, WHITE)
+    vindu.blit(score_text, (10, 5))
 
 
     # Har alltid disse med til slutt:
