@@ -11,8 +11,14 @@ clock = pg.time.Clock()
 
 pacman = PacMan(3, 4)
 
+dcol, drow = 0, 0      # Siste retning Pacman beveget seg i
+move_timer = 0
+move_delay = 150       # Millisekunder mellom hvert steg
+
 running = True
 while running:
+    dt = clock.tick(FPS)
+
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -20,13 +26,18 @@ while running:
             running = False
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
-                pacman.move(0, -1, board)
+                dcol, drow = 0, -1
             elif event.key == pg.K_DOWN:
-                pacman.move(0, 1, board)
+                dcol, drow = 0, 1
             elif event.key == pg.K_LEFT:
-                pacman.move(-1, 0, board)
+                dcol, drow = -1, 0
             elif event.key == pg.K_RIGHT:
-                pacman.move(1, 0, board)
+                dcol, drow = 1, 0
+
+    move_timer += dt
+    if move_timer >= move_delay:
+        move_timer = 0
+        pacman.move(dcol, drow, board)
 
     # Tegn bakgrunn: (En slags "reset" av hele vinduet vårt)
     vindu.fill(BLACK)
@@ -43,7 +54,6 @@ while running:
 
     # Har alltid disse med til slutt:
     pg.display.flip()
-    clock.tick(FPS)
 
 
 # While running er slutt: Avslutt pygame på en "ryddig måte":
