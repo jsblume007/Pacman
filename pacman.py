@@ -22,34 +22,39 @@ class PacMan:
         self.row = row
         self.col = col
 
-        self.frames_idle = self.getImageSpriteList(0, 0, 4)
-        # Bildet vi skal vise til å starte med er idle:
-        self.frames = self.frames_idle
-        # Om vi vil ha animasjon som går gjennom frames:
-        self.current_frame = 0
+        self.frames_hoyre = self.getImageSpriteList(0, 0, 4)
+        self.frames_opp   = self.getImageSpriteList(0, 32, 4)
+        self.frames_ned   = self.getImageSpriteList(0, 48, 4)
 
-        # Om vi vil speile bildet:
-        self.venstre = False
+        self.frames = self.frames_hoyre
+        self.current_frame = 0
+        self.retning = "hoyre"  # "hoyre", "venstre", "opp", "ned"
 
     def move(self, dcol, drow, board):
-        # Regner ut neste/ny posisjon
         ny_col = self.col + dcol
         ny_row = self.row + drow
         if board.is_road(ny_col, ny_row):
             self.col = ny_col
             self.row = ny_row
-            if dcol < 0:    # Beveger seg til venstre
-                self.venstre = True
-            elif dcol > 0:  # Beveger seg til høyre
-                self.venstre = False
+            if dcol < 0:
+                self.retning = "venstre"
+                self.frames = self.frames_hoyre
+            elif dcol > 0:
+                self.retning = "hoyre"
+                self.frames = self.frames_hoyre
+            elif drow < 0:
+                self.retning = "opp"
+                self.frames = self.frames_opp
+            elif drow > 0:
+                self.retning = "ned"
+                self.frames = self.frames_ned
 
     def draw(self, surface):
 
-        # Få bildet fra en liste av bilder (om du vil bruke animasjon/sprites):
         current_frame_image = self.frames[self.current_frame]
-        
-        # Speiler bildet hvis det trengs:
-        if self.venstre:
+
+        # Speiler bildet hvis Pacman går til venstre:
+        if self.retning == "venstre":
             current_frame_image = pg.transform.flip(current_frame_image, True, False)
 
         # Sørg for at vi tegner midt i "Tile":
